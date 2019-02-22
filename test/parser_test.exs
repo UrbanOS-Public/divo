@@ -36,7 +36,7 @@ defmodule Divo.ParserTest do
       ports: [{90,90}, {60,70}]
     }
 
-    expectedArgs = ["--port 90:90", "--port 60:70"]
+    expectedArgs = ["-p 90:90", "-p 60:70"]
 
     assert Divo.Parser.parse(configMap) == expectedArgs
   end

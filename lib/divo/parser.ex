@@ -6,17 +6,23 @@ defmodule Divo.Parser do
   def parse(configMap) do
     image = Map.get(configMap, :image)
     command = Map.get(configMap, :command)
-    opts = Map.get(configMap, :env, [])
-    |> Enum.map(fn {x, y} -> "--env #{String.upcase(to_string(x))}=#{y}" end)
+    opts = [:env, :ports, :volumes]
+    |> Enum.reduce([], fn x, acc -> parse_opts(configMap, x) ++ acc end)
 
-    opts = Map.get(configMap, :ports, [])
-    |> Enum.map(fn {x, y} -> "--port #{x}:#{y}" end)
-    |> Enum.concat(opts)
+    [image] ++ opts ++ [command]
+    |> Enum.filter(&included/1)
+  end
 
-    opts = Map.get(configMap, :volumes, [])
-    |> Enum.map(fn {x, y} -> "-v #{x}:#{y}" end)
-    |> Enum.concat(opts)
+  def parse_opts(configMap, opt) do
+    Map.get(configMap, opt, [])
+    |> Enum.map(&(parse_opt(&1, opt)))
+  end
 
-    Enum.filter([image] ++ opts ++ [command], fn x -> !is_nil(x) end)
+  def parse_opt({variable, value}, :env), do: "--env #{String.upcase(to_string(variable))}=#{value}"
+  def parse_opt({local, remote}, :ports), do: "-p #{local}:#{remote}"
+  def parse_opt({local, remote}, :volumes), do: "-v #{local}:#{remote}"
+
+  def included(arg) do
+    !is_nil(arg)
   end
 end
