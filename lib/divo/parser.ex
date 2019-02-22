@@ -11,7 +11,7 @@ defmodule Divo.Parser do
       [:env, :ports, :volumes]
       |> Enum.reduce([], fn x, acc -> parse_opts(configMap, x) ++ acc end)
 
-    ([image] ++ opts ++ [command])
+    (opts ++ [image, command])
     |> Enum.filter(&included/1)
   end
 
