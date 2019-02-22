@@ -8,6 +8,5 @@ defmodule Mix.Tasks.Docker.Stop do
 
   @impl Mix.Task
   def run(_args) do
-
   end
 end

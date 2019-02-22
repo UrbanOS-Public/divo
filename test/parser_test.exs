@@ -33,7 +33,7 @@ defmodule Divo.ParserTest do
 
   test "parse ports" do
     configMap = %{
-      ports: [{90,90}, {60,70}]
+      ports: [{90, 90}, {60, 70}]
     }
 
     expectedArgs = ["-p 90:90", "-p 60:70"]
