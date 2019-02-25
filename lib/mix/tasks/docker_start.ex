@@ -8,9 +8,10 @@ defmodule Mix.Tasks.Docker.Start do
   alias Divo.TaskHelper
 
   @impl Mix.Task
-  def run(_args) do
+  def run(args) do
     TaskHelper.fetch_config()
-    |> Enum.map(fn {x, y} -> Divo.Parser.parse(x, y) end)
+    |> filter_services(args)
+    |> Enum.map(fn {service, config} -> Divo.Parser.parse(service, config) end)
     |> Enum.map(&Divo.DockerCmd.run/1)
     |> Enum.map(&log_formatted/1)
   end
@@ -19,5 +20,15 @@ defmodule Mix.Tasks.Docker.Start do
     IO.puts(
       "docker run with (#{Enum.join(parameters, " ")})\n returned with code #{code}: #{message}"
     )
+  end
+
+  defp filter_services(services, []), do: services
+
+  defp filter_services(services, filter) do
+    Enum.filter(services, fn {service, _config} ->
+      filter
+      |> Keyword.get(:services, [])
+      |> Enum.member?(service)
+    end)
   end
 end

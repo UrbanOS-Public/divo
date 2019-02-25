@@ -2,9 +2,8 @@ use Mix.Config
 
 config :divo,
   divo: [
-    kafka: %{
-      image: "kafka:latest",
-      net: :redis,
+    busybox: %{
+      image: "busybox:latest",
       env: [
         val1: "foo",
         val2: "bar"
@@ -13,14 +12,15 @@ config :divo,
         {9092, 9092}
       ]
     },
-    redis: %{
-      image: "redis:1.2",
-      command: "redis start --foreground",
-      ports: [
-        {6379, 6379}
+    alpine: %{
+      image: "alpine:latest",
+      env: [
+        val1: "foo",
+        val2: "bar"
       ],
-      volumes: [
-        {"/tmp", "/opt/redis"}
-      ]
+      ports: [
+        {9092, 9092}
+      ],
+      command: ~S{ls /home && echo "Yodel"}
     }
   ]

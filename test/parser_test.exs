@@ -16,7 +16,7 @@ defmodule Divo.ParserTest do
       command: "rm -rf all.all"
     }
 
-    expected_args = get_expected_args(["rm -rf all.all"])
+    expected_args = get_expected_args(["rm", "-rf", "all.all"])
 
     assert Divo.Parser.parse(:derp, config_map) == expected_args
   end
