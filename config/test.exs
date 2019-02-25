@@ -4,6 +4,7 @@ config :divo,
   divo: [
     kafka: %{
       image: "kafka:latest",
+      net: :redis,
       env: [
         val1: "foo",
         val2: "bar"

@@ -8,12 +8,27 @@ defmodule Divo.Parser do
     command = Map.get(config_map, :command)
     name = "--name=#{create_name(service_name)}"
 
+    net =
+      config_map
+      |> Map.get(:net)
+      |> get_network()
+
+    additional_opts = Map.get(config_map, :additional_opts, [])
+    |> normalize_opts()
+
     opts =
       [:env, :ports, :volumes]
       |> Enum.reduce([], fn x, acc -> parse_opts(config_map, x) ++ acc end)
+      |> Enum.concat(additional_opts)
 
-    ([name] ++ opts ++ [image, command])
+    ([name, net] ++ opts ++ [image, command])
     |> Enum.filter(&included/1)
+  end
+
+  def create_name(service_name) do
+    app = Mix.Project.config()[:app]
+
+    "#{app}-#{service_name}"
   end
 
   defp parse_opts(config_map, opt) do
@@ -31,9 +46,16 @@ defmodule Divo.Parser do
     !is_nil(arg)
   end
 
-  def create_name(service_name) do
-    app = Mix.Project.config()[:app]
+  defp get_network(nil), do: nil
+  defp get_network(key), do: "--net=container:#{key}"
 
-    "#{app}-#{service_name}"
+  defp normalize_opts(opts) do
+    opts
+    |> Enum.reduce([], fn x, acc -> [normalize_opt(x) | acc] end)
+    |> List.flatten()
+  end
+
+  defp normalize_opt(opt) do
+    String.split(opt, " ", trim: true)
   end
 end

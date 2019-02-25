@@ -51,6 +51,43 @@ defmodule Divo.ParserTest do
     assert Divo.Parser.parse(:derp, config_map) == expected_args
   end
 
+  test "parse network" do
+    config_map = %{
+      net: :bob
+    }
+
+    expected_args = get_expected_args(["--net=container:bob"])
+
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
+  end
+
+  test "parser injects arbitrary 'additional params' into the docker start" do
+    config_map = %{
+      ports: [{90, 90}],
+      additional_opts: [
+        "--user=bob"
+      ]
+    }
+
+    expected_args = get_expected_args(["--publish=90:90", "--user=bob"])
+
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
+  end
+
+  test "parser injects arbitrary 'additional params' into the docker start even when not formatted for System.cmd" do
+    config_map = %{
+      ports: [{90, 90}],
+      additional_opts: [
+        "--user bob",
+        "-m 5mb"
+      ]
+    }
+
+    expected_args = get_expected_args(["--publish=90:90", "-m", "5mb", "--user", "bob"])
+
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
+  end
+
   defp get_expected_args(args) do
     ["--name=divo-derp" | args]
   end
