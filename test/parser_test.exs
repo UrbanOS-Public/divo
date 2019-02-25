@@ -1,53 +1,57 @@
 defmodule Divo.ParserTest do
   use ExUnit.Case
 
-  test "parse image name" do
-    configMap = %{
+  test "parse image and container name" do
+    config_map = %{
       image: "derp:latest"
     }
 
-    expectedArgs = ["derp:latest"]
+    expected_args = ["--name=divo-derp", "derp:latest"]
 
-    assert Divo.Parser.parse(configMap) == expectedArgs
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
   end
 
   test "parse command" do
-    configMap = %{
+    config_map = %{
       command: "rm -rf all.all"
     }
 
-    expectedArgs = ["rm -rf all.all"]
+    expected_args = get_expected_args(["rm -rf all.all"])
 
-    assert Divo.Parser.parse(configMap) == expectedArgs
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
   end
 
   test "parse environment variables" do
-    configMap = %{
+    config_map = %{
       env: [val1: "bob", val2: "hrob"]
     }
 
-    expectedArgs = ["--env VAL1=bob", "--env VAL2=hrob"]
+    expected_args = get_expected_args(["--env=VAL1=bob", "--env=VAL2=hrob"])
 
-    assert Divo.Parser.parse(configMap) == expectedArgs
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
   end
 
   test "parse ports" do
-    configMap = %{
+    config_map = %{
       ports: [{90, 90}, {60, 70}]
     }
 
-    expectedArgs = ["-p 90:90", "-p 60:70"]
+    expected_args = get_expected_args(["--publish=90:90", "--publish=60:70"])
 
-    assert Divo.Parser.parse(configMap) == expectedArgs
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
   end
 
   test "parse volumes" do
-    configMap = %{
+    config_map = %{
       volumes: [{"/tmp", "tmp/"}, {"/data", "/data/bad/"}]
     }
 
-    expectedArgs = ["-v /tmp:tmp/", "-v /data:/data/bad/"]
+    expected_args = get_expected_args(["--volume=/tmp:tmp/", "--volume=/data:/data/bad/"])
 
-    assert Divo.Parser.parse(configMap) == expectedArgs
+    assert Divo.Parser.parse(:derp, config_map) == expected_args
+  end
+
+  defp get_expected_args(args) do
+    ["--name=divo-derp" | args]
   end
 end
