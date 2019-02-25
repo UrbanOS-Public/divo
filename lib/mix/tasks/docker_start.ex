@@ -16,6 +16,8 @@ defmodule Mix.Tasks.Docker.Start do
   end
 
   defp log_formatted({parameters, {message, code}}) do
-    IO.puts("docker run with (#{Enum.join(parameters, " ")})\n returned with code #{code}: #{message}")
+    IO.puts(
+      "docker run with (#{Enum.join(parameters, " ")})\n returned with code #{code}: #{message}"
+    )
   end
 end

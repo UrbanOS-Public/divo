@@ -8,12 +8,13 @@ defmodule Divo.RunCmdTest do
   end
 
   test "docker run command called with expected arguments" do
-
     parameters = ["-p 90:90", "derp:latest", "rm -rf all.all"]
     Divo.DockerCmd.run(parameters)
 
     assert_called(
-      System.cmd("docker", ["run", "-p 90:90", "derp:latest", "rm -rf all.all"], [stderr_to_stdout: true]),
+      System.cmd("docker", ["run", "-p 90:90", "derp:latest", "rm -rf all.all"],
+        stderr_to_stdout: true
+      ),
       once()
     )
   end
@@ -23,7 +24,7 @@ defmodule Divo.RunCmdTest do
     Divo.DockerCmd.stop(service_name)
 
     assert_called(
-      System.cmd("docker", ["stop", "divo-derp"], [stderr_to_stdout: true]),
+      System.cmd("docker", ["stop", "divo-derp"], stderr_to_stdout: true),
       once()
     )
   end
@@ -33,7 +34,7 @@ defmodule Divo.RunCmdTest do
     Divo.DockerCmd.kill(service_name)
 
     assert_called(
-      System.cmd("docker", ["rm", "-f", "divo-derp"], [stderr_to_stdout: true]),
+      System.cmd("docker", ["rm", "-f", "divo-derp"], stderr_to_stdout: true),
       once()
     )
   end

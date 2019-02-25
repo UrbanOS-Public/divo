@@ -1,4 +1,3 @@
-
 defmodule Divo.DockerCmd do
   def run(parameters) do
     {parameters, System.cmd("docker", ["run" | parameters], stderr_to_stdout: true)}
