@@ -9,16 +9,16 @@ defmodule Mix.Tasks.Docker.Start do
 
   @impl Mix.Task
   def run(args) do
-    filtered_services =
+    services =
       TaskHelper.fetch_config()
       |> filter_services(args)
 
-    filtered_services
+    services
     |> Enum.map(fn {service, config} -> Divo.Parser.parse(service, config) end)
     |> Enum.map(&Divo.DockerCmd.run/1)
     |> Enum.map(&log_formatted/1)
 
-    filtered_services
+    services
     |> Enum.map(fn {service, config} -> {service, Map.get(config, :wait_for, nil)} end)
     |> Enum.map(&wait_for_condition/1)
   end
