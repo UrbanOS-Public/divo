@@ -21,7 +21,8 @@ defmodule Divo.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:placebo, "~> 1.2.1", only: [:dev, :test]}
+      {:placebo, "~> 1.2.1", only: [:dev, :test]},
+      {:patiently, "~> 0.2.0"}
     ]
   end
 end

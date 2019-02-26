@@ -1,6 +1,6 @@
 defmodule Divo.DockerCmd do
   def run(parameters) do
-    {parameters, System.cmd("docker", ["run" | parameters], stderr_to_stdout: true)}
+    {parameters, System.cmd("docker", ["run", "-d"] ++ parameters, stderr_to_stdout: true)}
   end
 
   @spec stop(binary()) :: {any(), non_neg_integer()}

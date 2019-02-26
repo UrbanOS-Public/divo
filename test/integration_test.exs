@@ -1,3 +1,4 @@
+### These tests rely on the configuration in test.exs
 defmodule IntegrationAllTest do
   use ExUnit.Case
   use Divo.Integration
