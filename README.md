@@ -50,6 +50,22 @@ config :myapp,
     }
   ]
 ```
-=======
-# divo
-A library for easily constructing integration service dependencies in docker and orchestrating with mix
+## Wait For
+
+Sometimes services take a moment to start up and Elixir apps tend to start (and attempt to run their tests)
+too quickly for their dependencies to be ready. For those situations, add the key `:wait_for` to the map
+that defines each services that will need to be fully initialized before accepting interactions from your
+service-under-test. The value of that key should be a tuple containing a log message to expect from the service
+indicating it is ready to accept requests, a interval in seconds to wait between log parsing attempts, and a
+number of retries to make the attempt.
+
+```
+...
+  kafka: %{
+    image: ...,
+    env: [
+      ...
+    ],
+    wait_for: {"I'm ready, boss", 500, 20}
+  }
+```
