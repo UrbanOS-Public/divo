@@ -26,12 +26,20 @@ defmodule Mix.Tasks.Docker.Start do
 
   def wait_for_condition({_service, nil}), do: Logger.info("No service waits defined")
 
-  def wait_for_condition({service, {log, dwell, retry}}) do
+  def wait_for_condition({service, wait_for_config}) do
+    {log, dwell, retry} = extract_wait_config(wait_for_config)
     Patiently.wait_for!(
       get_wait_condition(service, log),
       dwell: dwell,
       max_tries: retry
     )
+  end
+
+  defp extract_wait_config(wait_for_config) do
+    log = Map.get(wait_for_config, :log, "")
+    dwell = Map.get(wait_for_config, :dwell, 500)
+    retry = Map.get(wait_for_config, :retry, 40)
+    {log, dwell, retry}
   end
 
   defp get_wait_condition(service, log) do

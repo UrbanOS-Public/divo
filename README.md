@@ -88,6 +88,10 @@ number of retries to make the attempt.
     env: [
       ...
     ],
-    wait_for: {"I'm ready, boss", 500, 20}
+    wait_for: %{
+        log: "home",
+        dwell: 400,
+        max_retries: 10
+      }
   }
 ```

@@ -10,7 +10,12 @@ config :divo,
       ],
       ports: [
         {9092, 9092}
-      ]
+      ],
+      command: "ls",
+      wait_for: %{
+        log: "home",
+        dwell: 400
+      }
     },
     alpine: %{
       image: "alpine:latest",
