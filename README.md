@@ -50,12 +50,34 @@ config :myapp,
     }
   ]
 ```
+
+## Options
+
+These options can be added to a service definition's config to customize it.
+
+* `image` - the name of the docker image to be started. This is the only required key.
+
+* `env` - a keyword list of environment variables to be set in the started container. Each element is translated to a `--env=VARIABLE=VALUE` option in the run command.
+
+* `ports` - a list of ports to be exposed to the system. Each element is translated to a `--publish=LOCAL:REMOTE` option in the run command.
+
+* `volumes` - a list of tuples of the format `{local_volume, remote_volume}`. Each element is translated to a `--volume=LOCAL:REMOTE` option in the run command
+
+* `command` - a command to be run in the created container. Does not support piping `ls | grep logs` or additional commands `ls && cd ..`
+
+* `net` - a different service defined by Divo that this container needs to be linked to. Translated to `--network=container:APP_NAME-SERVICE_NAME`
+
+* `additional_opts` - a list of strings representing extra options to be passed to `docker run`. This allows for options not explicitly supported by Divo to be used if needed. Any option defined in the (Docker Run)[https://docs.docker.com/engine/reference/commandline/run/] docs can be used.
+
+* `wait_for` - see [Wait For]()
+
+
 ## Wait For
 
 Sometimes services take a moment to start up and Elixir apps tend to start (and attempt to run their tests)
 too quickly for their dependencies to be ready. For those situations, add the key `:wait_for` to the map
 that defines each services that will need to be fully initialized before accepting interactions from your
-service-under-test. The value of that key should be a tuple containing a log message to expect from the service
+service-under-test. The value of that key should be a map containing a log message to expect from the service
 indicating it is ready to accept requests, a interval in seconds to wait between log parsing attempts, and a
 number of retries to make the attempt.
 
