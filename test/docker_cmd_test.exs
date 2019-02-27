@@ -12,9 +12,7 @@ defmodule Divo.RunCmdTest do
     Divo.DockerCmd.run(parameters)
 
     assert_called(
-      System.cmd("docker", ["run", "-d", "-p 90:90", "derp:latest", "rm -rf all.all"],
-        stderr_to_stdout: true
-      ),
+      System.cmd("docker", ["run", "-d", "-p 90:90", "derp:latest", "rm -rf all.all"], stderr_to_stdout: true),
       once()
     )
   end

@@ -5,10 +5,12 @@ defmodule Divo.Parser do
 
   def parse(service_name, config_map) do
     image = Map.get(config_map, :image)
+
     command =
       config_map
       |> Map.get(:command, "")
       |> String.split(" ", trim: true)
+
     name = "--name=#{create_name(service_name)}"
 
     net =

@@ -4,6 +4,6 @@ WORKDIR /app
 RUN mix local.hex --force \
     && mix local.rebar --force \
     && mix deps.get \
-    && mix test \
+    # && mix test \ # Tests run separately due to dockerized Jenkins
     && mix format --check-formatted \
     && mix credo

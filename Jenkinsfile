@@ -12,7 +12,11 @@ node('infrastructure') {
         scos.doCheckoutStage()
 
         stage('Build') {
-            image = docker.build("divo:${env.GIT_COMMIT_HASH}", "--volume=/var/run/docker.sock:/var/run/docker.sock .")
+            image = docker.build("divo:${env.GIT_COMMIT_HASH}")
+        }
+
+        stage('Test') {
+            image.run('--rm --volume=/var/run/docker.sock:/var/run/docker.sock', 'mix test')
         }
 
         scos.doStageIf(scos.changeset.isRelease, "Publish") {
