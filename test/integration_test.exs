@@ -11,7 +11,7 @@ defmodule IntegrationAllTest do
     assert String.contains?(cmd_result, "busybox:latest")
   end
 
-  defp cmd_wrapper(cmd), do: :os.cmd(cmd) |> to_string
+  defp cmd_wrapper(cmd), do: cmd |> :os.cmd() |> to_string
 end
 
 defmodule IntegrationPartialTest do
@@ -26,5 +26,5 @@ defmodule IntegrationPartialTest do
     assert String.contains?(cmd_result, "busybox:latest") == false
   end
 
-  defp cmd_wrapper(cmd), do: :os.cmd(cmd) |> to_string
+  defp cmd_wrapper(cmd), do: cmd |> :os.cmd() |> to_string
 end

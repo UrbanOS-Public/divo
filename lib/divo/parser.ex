@@ -5,7 +5,10 @@ defmodule Divo.Parser do
 
   def parse(service_name, config_map) do
     image = Map.get(config_map, :image)
-    command = Map.get(config_map, :command, "") |> String.split(" ", trim: true)
+    command =
+      config_map
+      |> Map.get(:command, "")
+      |> String.split(" ", trim: true)
     name = "--name=#{create_name(service_name)}"
 
     net =
@@ -14,7 +17,8 @@ defmodule Divo.Parser do
       |> get_network()
 
     additional_opts =
-      Map.get(config_map, :additional_opts, [])
+      config_map
+      |> Map.get(:additional_opts, [])
       |> normalize_opts()
 
     opts =
@@ -33,12 +37,14 @@ defmodule Divo.Parser do
   end
 
   defp parse_opts(config_map, opt) do
-    Map.get(config_map, opt, [])
+    config_map
+    |> Map.get(opt, [])
     |> Enum.map(&parse_opt(&1, opt))
   end
 
-  defp parse_opt({variable, value}, :env),
-    do: "--env=#{String.upcase(to_string(variable))}=#{value}"
+  defp parse_opt({variable, value}, :env) do
+    "--env=#{String.upcase(to_string(variable))}=#{value}"
+  end
 
   defp parse_opt({local, remote}, :ports), do: "--publish=#{local}:#{remote}"
   defp parse_opt({local, remote}, :volumes), do: "--volume=#{local}:#{remote}"

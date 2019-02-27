@@ -4,6 +4,7 @@ defmodule Mix.Tasks.Docker.Start do
   docker containers defined in your application's
   environment config file under the :divo key.
   """
+  require Logger
   use Mix.Task
   alias Divo.{Parser, TaskHelper}
 
@@ -16,14 +17,14 @@ defmodule Mix.Tasks.Docker.Start do
     services
     |> Enum.map(fn {service, config} -> Divo.Parser.parse(service, config) end)
     |> Enum.map(&Divo.DockerCmd.run/1)
-    |> Enum.map(&log_formatted/1)
+    |> Enum.each(&log_formatted/1)
 
     services
     |> Enum.map(fn {service, config} -> {service, Map.get(config, :wait_for, nil)} end)
     |> Enum.map(&wait_for_condition/1)
   end
 
-  def wait_for_condition({_service, nil}), do: IO.puts("No service waits defined")
+  def wait_for_condition({_service, nil}), do: Logger.info("No service waits defined")
 
   def wait_for_condition({service, {log, dwell, retry}}) do
     Patiently.wait_for!(
@@ -35,17 +36,18 @@ defmodule Mix.Tasks.Docker.Start do
 
   defp get_wait_condition(service, log) do
     fn ->
-      IO.puts("Checking for #{log}")
+      Logger.info("Checking for #{log}")
       status_code = Mix.shell().cmd("docker logs #{Parser.create_name(service)} --tail 100000 | grep -q '#{log}'")
       case status_code do
-        0 -> IO.puts("Found log '#{log}'"); true
+        0 -> Logger.info("Found log '#{log}'")
+             true
         _ -> false
       end
     end
   end
 
   defp log_formatted({parameters, {message, code}}) do
-    IO.puts(
+    Logger.info(
       "docker run with (#{Enum.join(parameters, " ")})\n returned with code #{code}: #{message}"
     )
   end
