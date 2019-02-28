@@ -4,10 +4,13 @@ defmodule Divo.MixProject do
   def project do
     [
       app: :divo,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package(),
+      description: description(),
+      source_url: "https://github.com/SmartColumbusOS/divo"
     ]
   end
 
@@ -24,6 +27,18 @@ defmodule Divo.MixProject do
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:placebo, "~> 1.2.1", only: [:dev, :test]},
       {:patiently, "~> 0.2.0"}
+    ]
+  end
+
+  defp description do
+    "A library for easily constructing integration service dependencies in docker and orchestrating with mix."
+  end
+
+  defp package do
+    [
+      organization: "smartcolumbus_os",
+      licenses: ["AllRightsReserved"],
+      links: %{"GitHub" => "https://github.com/SmartColumbusOS/divo"}
     ]
   end
 end
