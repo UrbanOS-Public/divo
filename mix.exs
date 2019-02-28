@@ -26,6 +26,7 @@ defmodule Divo.MixProject do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:placebo, "~> 1.2.1", only: [:dev, :test]},
+      {:ex_doc, "~> 0.19", only: :dev},
       {:patiently, "~> 0.2.0"}
     ]
   end
