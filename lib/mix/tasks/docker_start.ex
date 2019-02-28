@@ -47,6 +47,7 @@ defmodule Mix.Tasks.Docker.Start do
     fn ->
       Logger.info("Checking for #{log}")
       status_code = Mix.shell().cmd("docker logs #{Parser.create_name(service)} --tail 100000 2>&1 | grep -q '#{log}'")
+
       case status_code do
         0 ->
           Logger.info("Found log '#{log}'")
