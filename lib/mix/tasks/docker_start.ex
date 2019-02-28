@@ -28,6 +28,7 @@ defmodule Mix.Tasks.Docker.Start do
 
   def wait_for_condition({service, wait_for_config}) do
     {log, dwell, retry} = extract_wait_config(wait_for_config)
+
     Patiently.wait_for!(
       get_wait_condition(service, log),
       dwell: dwell,
@@ -47,17 +48,18 @@ defmodule Mix.Tasks.Docker.Start do
       Logger.info("Checking for #{log}")
       status_code = Mix.shell().cmd("docker logs #{Parser.create_name(service)} --tail 100000 2>&1 | grep -q '#{log}'")
       case status_code do
-        0 -> Logger.info("Found log '#{log}'")
-             true
-        _ -> false
+        0 ->
+          Logger.info("Found log '#{log}'")
+          true
+
+        _ ->
+          false
       end
     end
   end
 
   defp log_formatted({parameters, {message, code}}) do
-    Logger.info(
-      "docker run with (#{Enum.join(parameters, " ")})\n returned with code #{code}: #{message}"
-    )
+    Logger.info("docker run with (#{Enum.join(parameters, " ")})\n returned with code #{code}: #{message}")
   end
 
   defp filter_services(services, []), do: services
