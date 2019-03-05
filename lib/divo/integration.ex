@@ -14,7 +14,7 @@ defmodule Divo.Integration do
         Mix.Tasks.Docker.Start.run(unquote(opts))
 
         Mix.Project.config()
-        |> Map.get(:app)
+        |> Keyword.get(:app)
         |> Application.ensure_all_started()
 
         on_exit(fn ->
