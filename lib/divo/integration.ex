@@ -7,17 +7,19 @@ defmodule Divo.Integration do
   """
 
   defmacro __using__(opts \\ []) do
+    auto_start = Keyword.get(opts, :auto_start, true)
+
     quote do
       import Mix.Tasks.Docker.{Start, Kill}
 
       setup_all do
         Mix.Tasks.Docker.Start.run(unquote(opts))
 
-        Mix.Project.config()
-        |> Keyword.get(:app)
-        |> Application.ensure_all_started()
+        app = Mix.Project.config() |> Keyword.get(:app)
+        if unquote(auto_start), do: Application.ensure_all_started(app)
 
         on_exit(fn ->
+          if unquote(auto_start), do: Application.stop(app)
           Mix.Tasks.Docker.Kill.run(unquote(opts))
         end)
 
