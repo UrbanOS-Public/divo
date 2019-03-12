@@ -1,4 +1,4 @@
-defmodule Divo.RunCmdTest do
+defmodule Divo.ComposeTest do
   use ExUnit.Case
   use Placebo
 
@@ -8,21 +8,22 @@ defmodule Divo.RunCmdTest do
   end
 
   test "docker run command called with expected arguments" do
-    parameters = ["-p 90:90", "derp:latest", "rm -rf all.all"]
-    Divo.DockerCmd.run(parameters)
+    Divo.Compose.run()
 
     assert_called(
-      System.cmd("docker", ["run", "-d", "-p 90:90", "derp:latest", "rm -rf all.all"], stderr_to_stdout: true),
+      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "up", "--detach"],
+        env: [{"TMPDIR", "/tmp"}]
+        stderr_to_stdout: true),
       once()
     )
   end
 
   test "docker stop command called with expected arguments" do
-    service_name = "divo-derp"
-    Divo.DockerCmd.stop(service_name)
+    Divo.Compose.stop()
 
     assert_called(
-      System.cmd("docker", ["stop", "divo-derp"], stderr_to_stdout: true),
+      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true),
+      env: [{"TMPDIR", "/tmp"}],
       once()
     )
   end
