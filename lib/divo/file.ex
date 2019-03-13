@@ -11,7 +11,7 @@ defmodule Divo.File do
     app = Helper.fetch_name()
 
     case System.get_env("TMPDIR") do
-      nil     -> "/tmp/#{app}.compose"
+      nil -> "/tmp/#{app}.compose"
       defined -> "#{defined}/#{app}.compose"
     end
   end

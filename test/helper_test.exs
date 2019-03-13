@@ -14,6 +14,7 @@ defmodule Divo.HelperTest do
         ports: ["8080:80"]
       }
     }
+
     Application.put_env(:divo, :divo, compose_services)
 
     assert Divo.Helper.fetch_config() == compose_services

@@ -15,7 +15,7 @@ defmodule Divo.Compose do
   def run(opts \\ []) do
     services = get_services(opts)
 
-    ["up", "--detach"] ++ services
+    (["up", "--detach"] ++ services)
     |> execute()
 
     await()
@@ -39,7 +39,7 @@ defmodule Divo.Compose do
       |> File.ensure_file()
 
     args =
-      ["--project-name", app, "--file", file] ++ [action]
+      (["--project-name", app, "--file", file] ++ [action])
       |> List.flatten()
 
     System.cmd("docker-compose", args, stderr_to_stdout: true)
@@ -62,6 +62,7 @@ defmodule Divo.Compose do
     wait_config =
       Helper.fetch_name()
       |> Application.get_env(:divo_wait)
+
     dwell = Keyword.get(wait_config, :dwell, 500)
     tries = Keyword.get(wait_config, :max_tries, 10)
 
@@ -75,14 +76,17 @@ defmodule Divo.Compose do
   defp check_health(container) do
     fn ->
       Logger.info("Checking #{container} is healthy...")
-      health_status(container)
+
+      container
+      |> health_status()
       |> case do
-          "healthy" ->
-            Logger.info("Service #{container} ready!")
-            true
-          _ ->
-            false
-        end
+        "healthy" ->
+          Logger.info("Service #{container} ready!")
+          true
+
+        _ ->
+          false
+      end
     end
   end
 
@@ -95,10 +99,11 @@ defmodule Divo.Compose do
   defp health_defined?(container) do
     {health, _} = System.cmd("docker", ["inspect", "--format", "{{json .State.Health}}", container])
 
-    Jason.decode!(health)
+    health
+    |> Jason.decode!()
     |> case do
       nil -> false
-      _   -> true
+      _ -> true
     end
   end
 
