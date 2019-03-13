@@ -7,20 +7,19 @@ defmodule Divo.Setup do
   """
 
   defmacro __using__(opts \\ []) do
+    auto_start = Keyword.get(opts, :auto_start, true)
+
     quote do
       import Divo.Compose
 
       setup_all do
         Divo.Compose.run(unquote(opts))
 
-        Mix.Project.config()
-        |> Keyword.get(:app)
-        |> Application.ensure_all_started()
+        app = Mix.Project.config() |> Keyword.get(:app)
+        if unquote(auto_start), do: Application.ensure_all_started(app)
 
         on_exit(fn ->
-          Mix.Project.config()
-          |> Keyword.get(:app)
-          |> Application.stop()
+          if unquote(auto_start), do: Application.stop(app)
 
           Divo.Compose.kill()
         end)
