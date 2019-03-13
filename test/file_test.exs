@@ -16,7 +16,7 @@ defmodule Divo.FileTest do
   end
 
   test "uses existing compose file" do
-    TemporaryEnv.put(:divo, :divo, "test/docker-compose.yaml") do
+    TemporaryEnv.put :divo, :divo, "test/docker-compose.yaml" do
       file = Divo.Helper.fetch_config()
 
       assert Divo.File.ensure_file(file) == "test/docker-compose.yaml"

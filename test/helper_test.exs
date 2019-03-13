@@ -16,7 +16,7 @@ defmodule Divo.HelperTest do
       }
     }
 
-    TemporaryEnv.put(:divo, :divo, compose_services) do
+    TemporaryEnv.put :divo, :divo, compose_services do
       assert Divo.Helper.fetch_config() == compose_services
     end
   end
