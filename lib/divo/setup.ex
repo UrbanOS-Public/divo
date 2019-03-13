@@ -14,15 +14,15 @@ defmodule Divo.Setup do
         Divo.Compose.run(unquote(opts))
 
         Mix.Project.config()
-        |> Map.get(:app)
+        |> Keyword.get(:app)
         |> Application.ensure_all_started()
 
         on_exit(fn ->
           Mix.Project.config()
-          |> Map.get(:app)
+          |> Keyword.get(:app)
           |> Application.stop()
 
-          Divo.Compose.kill(unquote(opts))
+          Divo.Compose.kill()
         end)
 
         :ok

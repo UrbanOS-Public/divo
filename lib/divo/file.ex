@@ -10,11 +10,10 @@ defmodule Divo.File do
   def file_name() do
     app = Helper.fetch_name()
 
-    file =
-      case System.get_env("TMPDIR") do
-        nil     -> "/tmp/#{app}.compose"
-        defined -> "#{defined}/#{app}.compose"
-      end
+    case System.get_env("TMPDIR") do
+      nil     -> "/tmp/#{app}.compose"
+      defined -> "#{defined}/#{app}.compose"
+    end
   end
 
   def ensure_file(app_config) when is_binary(app_config) do

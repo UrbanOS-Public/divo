@@ -12,7 +12,7 @@ config :divo,
         ],
         ports: ["8888:8888"],
         command: "sleep 1000",
-        healthcheck: %{test: ["CMD-shell", "ls / | grep home || exit 1"]}
+        healthcheck: %{test: ["CMD-SHELL", "ls / | grep home || exit 1"]}
       },
       alpine: %{
         image: "alpine:latest",
@@ -24,4 +24,5 @@ config :divo,
         command: ~S{ls /home && echo "Yodel"}
       }
     }
-  }
+  },
+  divo_wait: [dwell: 700, max_tries: 50]

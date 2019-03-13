@@ -3,6 +3,8 @@ defmodule Divo.ComposeTest do
   use Placebo
 
   setup do
+    allow(System.cmd(any(), any()), meck_options: [:passthrough])
+    allow(System.get_env(any()), return: "/tmp")
     allow(System.cmd(any(), any(), any()), return: {"", 0})
     :ok
   end
@@ -12,7 +14,6 @@ defmodule Divo.ComposeTest do
 
     assert_called(
       System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "up", "--detach"],
-        env: [{"TMPDIR", "/tmp"}]
         stderr_to_stdout: true),
       once()
     )
@@ -22,18 +23,18 @@ defmodule Divo.ComposeTest do
     Divo.Compose.stop()
 
     assert_called(
-      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true),
-      env: [{"TMPDIR", "/tmp"}],
+      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "stop"],
+        stderr_to_stdout: true),
       once()
     )
   end
 
   test "docker stop and rm commands called with expected arguments on kill" do
-    service_name = "divo-derp"
-    Divo.DockerCmd.kill(service_name)
+    Divo.Compose.kill()
 
     assert_called(
-      System.cmd("docker", ["rm", "-f", "divo-derp"], stderr_to_stdout: true),
+      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "down"],
+        stderr_to_stdout: true),
       once()
     )
   end

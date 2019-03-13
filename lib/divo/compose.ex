@@ -13,7 +13,9 @@ defmodule Divo.Compose do
   alias Divo.{File, Helper}
 
   def run(opts \\ []) do
-    ["up", "--detach"] ++ opts
+    services = get_services(opts)
+
+    ["up", "--detach"] ++ services
     |> execute()
 
     await()
@@ -28,7 +30,9 @@ defmodule Divo.Compose do
   end
 
   defp execute(action) do
-    app = Helper.fetch_name()
+    app =
+      Helper.fetch_name()
+      |> to_string()
 
     file =
       Helper.fetch_config()
@@ -41,17 +45,30 @@ defmodule Divo.Compose do
     System.cmd("docker-compose", args, stderr_to_stdout: true)
   end
 
+  defp get_services(opts) do
+    case Keyword.get(opts, :services) do
+      nil -> []
+      defined -> Enum.map(defined, &to_string(&1))
+    end
+  end
+
   defp await() do
-    fetch_containers
-    |> Enum.filter(&health_defined/1)
+    fetch_containers()
+    |> Enum.filter(&health_defined?/1)
     |> Enum.map(&await_healthy/1)
   end
 
   defp await_healthy(container) do
+    wait_config =
+      Helper.fetch_name()
+      |> Application.get_env(:divo_wait)
+    dwell = Keyword.get(wait_config, :dwell, 500)
+    tries = Keyword.get(wait_config, :max_tries, 10)
+
     Patiently.wait_for!(
       check_health(container),
-      dwell: 500,
-      max_retries: 50
+      dwell: dwell,
+      max_tries: tries
     )
   end
 
@@ -70,7 +87,7 @@ defmodule Divo.Compose do
   end
 
   defp fetch_containers() do
-    {containers, _} = System.cmd("docker", ["ps", "--quit"])
+    {containers, _} = System.cmd("docker", ["ps", "--quiet"])
 
     String.split(containers, "\n", trim: true)
   end

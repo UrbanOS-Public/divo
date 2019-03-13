@@ -8,7 +8,7 @@ defmodule Mix.Tasks.Docker.Stop do
   alias Divo.Compose
 
   @impl Mix.Task
-  def run() do
+  def run(_args) do
     Compose.stop()
   end
 end

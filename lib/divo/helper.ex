@@ -10,7 +10,10 @@ defmodule Divo.Helper do
   end
 
   def fetch_config() do
-    fetch_name()
-    |> Application.fetch_env!(:divo)
+    with {:ok, config} <- Application.fetch_env(fetch_name(), :divo) do
+      config
+    else
+      :error -> raise ArgumentError, message: "no services were defined in application config"
+    end
   end
 end

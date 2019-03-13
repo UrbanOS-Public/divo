@@ -3,12 +3,12 @@ defmodule IntegrationAllTest do
   use ExUnit.Case
   use Divo.Setup
 
-  test "test that the environment is stood up" do
+  test "the full dependency stack is stood up" do
     containers =
-      'docker ps -a | grep divo-busybox'
+      'docker ps -a'
       |> cmd_wrapper()
 
-    assert String.contains?(containers, "busybox:latest")
+    assert String.contains?(containers, "divo_busybox_1")
   end
 
   defp cmd_wrapper(cmd), do: cmd |> :os.cmd() |> to_string
@@ -18,12 +18,13 @@ defmodule IntegrationPartialTest do
   use ExUnit.Case
   use Divo.Setup, services: [:alpine]
 
-  test "test that only part of the environment is stood up" do
+  test "only specified parts of the stack are stood up" do
     containers =
-      'docker ps -a | grep divo-busybox'
+      'docker ps -a'
       |> cmd_wrapper()
 
-    assert String.contains?(containers, "busybox:latest") == false
+    assert String.contains?(containers, "divo_busybox_1") == false
+    assert String.contains?(containers, "divo_alpine_1") == true
   end
 
   defp cmd_wrapper(cmd), do: cmd |> :os.cmd() |> to_string
