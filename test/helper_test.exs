@@ -1,5 +1,6 @@
 defmodule Divo.HelperTest do
   use ExUnit.Case
+  require TemporaryEnv
 
   test "returns the apps name for parsing" do
     assert Divo.Helper.fetch_name() == :divo
@@ -15,8 +16,8 @@ defmodule Divo.HelperTest do
       }
     }
 
-    Application.put_env(:divo, :divo, compose_services)
-
-    assert Divo.Helper.fetch_config() == compose_services
+    TemporaryEnv.put(:divo, :divo, compose_services) do
+      assert Divo.Helper.fetch_config() == compose_services
+    end
   end
 end

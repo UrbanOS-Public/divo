@@ -1,6 +1,7 @@
 defmodule Divo.FileTest do
   use ExUnit.Case
   use Placebo
+  require TemporaryEnv
 
   test "correctly determines the filename" do
     allow(System.get_env("TMPDIR"), return: "/var/tmp/foo")
@@ -14,12 +15,13 @@ defmodule Divo.FileTest do
     assert Divo.File.file_name() == "/tmp/divo.compose"
   end
 
-  # test "uses existing compose file" do
-  #   Application.put_env(:divo, :divo, "test/docker-compose.yaml", timeout: 5)
-  #   file = Divo.Helper.fetch_config()
+  test "uses existing compose file" do
+    TemporaryEnv.put(:divo, :divo, "test/docker-compose.yaml") do
+      file = Divo.Helper.fetch_config()
 
-  #   assert Divo.File.ensure_file(file) == "test/docker-compose.yaml"
-  # end
+      assert Divo.File.ensure_file(file) == "test/docker-compose.yaml"
+    end
+  end
 
   test "generates compose file from app config" do
     allow(File.write!(any(), any()), return: :ok)

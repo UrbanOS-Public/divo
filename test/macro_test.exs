@@ -1,7 +1,7 @@
 ### These tests rely on the configuration in test.exs
 defmodule IntegrationAllTest do
   use ExUnit.Case
-  use Divo.Setup
+  use Divo
 
   test "the full dependency stack is stood up" do
     containers =
@@ -16,7 +16,7 @@ end
 
 defmodule IntegrationPartialTest do
   use ExUnit.Case
-  use Divo.Setup, services: [:alpine]
+  use Divo, services: [:alpine]
 
   test "only specified parts of the stack are stood up" do
     containers =

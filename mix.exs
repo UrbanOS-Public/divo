@@ -28,7 +28,8 @@ defmodule Divo.MixProject do
       {:jason, "~> 1.1"},
       {:placebo, "~> 1.2.1", only: [:dev, :test]},
       {:ex_doc, "~> 0.19", only: :dev},
-      {:patiently, "~> 0.2.0"}
+      {:patiently, "~> 0.2.0"},
+      {:temporary_env, "~> 2.0.1", only: [:dev, :test]}
     ]
   end
 
