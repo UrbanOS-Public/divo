@@ -1,0 +1,5 @@
+FROM alpine:latest
+
+EXPOSE 80/tcp
+
+CMD ["sleep", "100"]

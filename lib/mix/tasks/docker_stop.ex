@@ -5,12 +5,10 @@ defmodule Mix.Tasks.Docker.Stop do
   under the :divo key.
   """
   use Mix.Task
-  alias Divo.TaskHelper
+  alias Divo.Compose
 
   @impl Mix.Task
   def run(_args) do
-    TaskHelper.fetch_config()
-    |> Enum.map(fn {service_name, _config} -> Divo.Parser.create_name(service_name) end)
-    |> Enum.map(&Divo.DockerCmd.stop/1)
+    Compose.stop()
   end
 end

@@ -10,4 +10,5 @@
   "nimble_parsec": {:hex, :nimble_parsec, "0.5.0", "90e2eca3d0266e5c53f8fbe0079694740b9c91b6747f2b7e3c5d21966bba8300", [:mix], [], "hexpm"},
   "patiently": {:hex, :patiently, "0.2.0", "67eb139591e10c4b363ae0198e832552f191c58894731efd3bf124ec4722267a", [:mix], [], "hexpm"},
   "placebo": {:hex, :placebo, "1.2.1", "303ebb597279fd77b1f6d38ec377be4932f73246351f181d6128d0a58d3f74e9", [:mix], [{:meck, "~> 0.8.9", [hex: :meck, repo: "hexpm", optional: false]}], "hexpm"},
+  "temporary_env": {:hex, :temporary_env, "2.0.1", "d4b5e031837e5619485e1f23af7cba7e897b8fd546eaaa8b10c812d642ec4546", [:mix], [], "hexpm"},
 }

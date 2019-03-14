@@ -1,0 +1,5 @@
+version: "2.2"
+services:
+  busybox:
+    image: busybox:latest
+    ports: "8080:8080" # <- ports must be a list

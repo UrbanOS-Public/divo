@@ -4,7 +4,7 @@ defmodule Divo.MixProject do
   def project do
     [
       app: :divo,
-      version: "0.2.1",
+      version: "1.0.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -25,9 +25,11 @@ defmodule Divo.MixProject do
   defp deps do
     [
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:jason, "~> 1.1"},
       {:placebo, "~> 1.2.1", only: [:dev, :test]},
       {:ex_doc, "~> 0.19", only: :dev},
-      {:patiently, "~> 0.2.0"}
+      {:patiently, "~> 0.2.0"},
+      {:temporary_env, "~> 2.0.1", only: [:dev, :test]}
     ]
   end
 
