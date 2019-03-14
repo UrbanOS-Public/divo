@@ -10,7 +10,7 @@ defmodule Divo.Compose do
   your Mix.env file under the :myapp, :divo key.
   """
   require Logger
-  alias Divo.{File, Helper}
+  alias Divo.{File, Helper, Validate}
 
   def run(opts \\ []) do
     services = get_services(opts)
@@ -41,6 +41,8 @@ defmodule Divo.Compose do
     args =
       (["--project-name", app, "--file", file] ++ [action])
       |> List.flatten()
+
+    Validate.validate(file)
 
     System.cmd("docker-compose", args, stderr_to_stdout: true)
     |> log_compose()
