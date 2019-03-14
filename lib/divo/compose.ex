@@ -43,7 +43,11 @@ defmodule Divo.Compose do
       |> List.flatten()
 
     System.cmd("docker-compose", args, stderr_to_stdout: true)
+    |> log_compose()
   end
+
+  defp log_compose({message, 0}), do: Logger.info(message)
+  defp log_compose({message, code}), do: Logger.error("Docker Compose exited with code: #{code}. #{message}")
 
   defp get_services(opts) do
     case Keyword.get(opts, :services) do
@@ -61,7 +65,7 @@ defmodule Divo.Compose do
   defp await_healthy(container) do
     wait_config =
       Helper.fetch_name()
-      |> Application.get_env(:divo_wait, [dwell: 500, max_tries: 10])
+      |> Application.get_env(:divo_wait, dwell: 500, max_tries: 10)
 
     dwell = Keyword.get(wait_config, :dwell)
     tries = Keyword.get(wait_config, :max_tries)
