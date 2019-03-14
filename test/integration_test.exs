@@ -26,32 +26,34 @@ defmodule IntegrationBuildTest do
   require TemporaryEnv
 
   test "compose files with build instructions will build and run" do
-    dockerfile_path =
-      case System.get_env("TMPDIR") do
-        nil -> "/tmp"
-        defined -> "#{defined}"
-      end
-
-    dockerfile = ~s(FROM alpine:latest\nEXPOSE 80/tcp\nCMD ["sleep","100"]\n)
-    File.write!("#{dockerfile_path}/divo.dockerfile", dockerfile)
-
-    compose = %{
-      version: "3.4",
-      services: %{
-        custom_app: %{
-          build: %{
-            context: "#{dockerfile_path}",
-            dockerfile: "#{dockerfile_path}/divo.dockerfile"
-          }
-        }
-      }
-    }
+    compose = "test/support/build-compose.yaml"
 
     TemporaryEnv.put :divo, :divo, compose do
       Divo.Compose.run()
 
       {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
       assert String.contains?(containers, "divo_custom_app_1") == true
+
+      Divo.Compose.kill()
+    end
+  end
+end
+
+defmodule IntegrationLogTest do
+  use ExUnit.Case
+  import ExUnit.CaptureLog
+  require TemporaryEnv
+
+  test "compose files with health check wait until healthy" do
+    compose = "test/support/sample-compose.yaml"
+
+    TemporaryEnv.put :divo, :divo, compose do
+      output = fn ->
+        Divo.Compose.run()
+      end
+
+      assert capture_log(output) =~ "is healthy..."
+      assert capture_log(output) =~ "ready!"
 
       Divo.Compose.kill()
     end

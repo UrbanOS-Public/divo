@@ -1,0 +1,6 @@
+version: "3.4"
+services:
+  custom_app:
+    build:
+      context: .
+      dockerfile: sample-dockerfile
