@@ -44,18 +44,63 @@ defmodule IntegrationLogTest do
   import ExUnit.CaptureLog
   require TemporaryEnv
 
-  test "compose files with health check wait until healthy" do
+  test "compose file with health check wait until healthy" do
     compose = "test/support/sample-compose.yaml"
 
     TemporaryEnv.put :divo, :divo, compose do
       output = fn ->
+        Divo.Compose.kill()
         Divo.Compose.run()
       end
 
-      assert capture_log(output) =~ "is healthy..."
-      assert capture_log(output) =~ "ready!"
+      logs = capture_log(output)
+
+      healthy_checks =
+        logs
+        |> check_logs_for("healthy...")
+
+      ready_checks =
+        logs
+        |> check_logs_for("ready!")
+
+      assert healthy_checks >= 5
+      assert ready_checks == 1
 
       Divo.Compose.kill()
     end
+  end
+
+  test "compose file without check does not wait to start" do
+    compose = "test/support/build-compose.yaml"
+
+    TemporaryEnv.put :divo, :divo, compose do
+      output = fn ->
+        Divo.Compose.kill()
+        Divo.Compose.run()
+      end
+
+      logs = capture_log(output)
+
+      healthy_checks =
+        logs
+        |> check_logs_for("healthy...")
+
+      ready_checks =
+        logs
+        |> check_logs_for("ready!")
+
+      assert healthy_checks == 0
+      assert ready_checks == 0
+
+      Divo.Compose.kill()
+    end
+  end
+
+  defp check_logs_for(log, word) do
+    log
+    |> String.split()
+    |> Enum.count(fn chunk ->
+      String.contains?(chunk, word)
+    end)
   end
 end
