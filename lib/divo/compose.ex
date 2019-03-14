@@ -61,10 +61,10 @@ defmodule Divo.Compose do
   defp await_healthy(container) do
     wait_config =
       Helper.fetch_name()
-      |> Application.get_env(:divo_wait)
+      |> Application.get_env(:divo_wait, [dwell: 500, max_tries: 10])
 
-    dwell = Keyword.get(wait_config, :dwell, 500)
-    tries = Keyword.get(wait_config, :max_tries, 10)
+    dwell = Keyword.get(wait_config, :dwell)
+    tries = Keyword.get(wait_config, :max_tries)
 
     Patiently.wait_for!(
       check_health(container),
