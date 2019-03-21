@@ -31,7 +31,13 @@ defmodule Divo do
         if unquote(auto_start), do: Application.ensure_all_started(app)
 
         on_exit(fn ->
-          if unquote(auto_start), do: Application.stop(app)
+          if unquote(auto_start) do
+            dependent_apps =
+              Application.spec(app, :applications) -- [:kernel, :stdlib, :elixir, :ex_unit, :logger, :divo]
+
+            [app | dependent_apps]
+            |> Enum.each(&Application.stop/1)
+          end
 
           Divo.Compose.kill()
         end)
