@@ -11,7 +11,8 @@ by adding `divo` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:divo, "~> 0.1.0"}
+
+    {:divo, "~> 1.0.0", only: [:dev, :integration], organization: "smartcolumbus_os"}
   ]
 end
 ```
