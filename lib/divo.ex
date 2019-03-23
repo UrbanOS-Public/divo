@@ -33,7 +33,7 @@ defmodule Divo do
         on_exit(fn ->
           if unquote(auto_start) do
             dependent_apps =
-              Application.spec(app, :applications) -- [:kernel, :stdlib, :elixir, :ex_unit, :logger, :divo]
+              Application.spec(app, :applications) -- [:kernel, :stdlib, :elixir, :ex_unit, :logger, :divo, :placebo]
 
             [app | dependent_apps]
             |> Enum.each(&Application.stop/1)
