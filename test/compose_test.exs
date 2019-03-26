@@ -13,9 +13,7 @@ defmodule Divo.ComposeTest do
     Divo.Compose.run()
 
     assert_called(
-      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "up", "--detach"],
-        stderr_to_stdout: true
-      ),
+      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "up", "--detach"], stderr_to_stdout: true),
       once()
     )
   end
@@ -24,9 +22,7 @@ defmodule Divo.ComposeTest do
     Divo.Compose.stop()
 
     assert_called(
-      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "stop"],
-        stderr_to_stdout: true
-      ),
+      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true),
       once()
     )
   end
@@ -35,9 +31,7 @@ defmodule Divo.ComposeTest do
     Divo.Compose.kill()
 
     assert_called(
-      System.cmd("docker-compose", ["--project-name", "divo", "--file", "/tmp/divo.compose", "down"],
-        stderr_to_stdout: true
-      ),
+      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "down"], stderr_to_stdout: true),
       once()
     )
   end
