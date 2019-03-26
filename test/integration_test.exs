@@ -5,7 +5,7 @@ defmodule IntegrationAllTest do
   test "the full dependency stack is stood up" do
     {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
 
-    assert String.contains?(containers, "divo_busybox_1")
+    assert String.contains?(containers, "busybox_1")
   end
 end
 
@@ -16,8 +16,8 @@ defmodule IntegrationPartialTest do
   test "only specified parts of the stack are stood up" do
     {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
 
-    assert String.contains?(containers, "divo_busybox_1") == false
-    assert String.contains?(containers, "divo_alpine_1") == true
+    assert String.contains?(containers, "busybox_1") == false
+    assert String.contains?(containers, "alpine_1") == true
   end
 end
 
@@ -32,7 +32,7 @@ defmodule IntegrationBuildTest do
       Divo.Compose.run()
 
       {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
-      assert String.contains?(containers, "divo_custom_app_1") == true
+      assert String.contains?(containers, "support_custom_app_1") == true
 
       Divo.Compose.kill()
     end

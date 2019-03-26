@@ -30,16 +30,12 @@ defmodule Divo.Compose do
   end
 
   defp execute(action) do
-    app =
-      Helper.fetch_name()
-      |> to_string()
-
     file =
       Helper.fetch_config()
       |> File.ensure_file()
 
     args =
-      (["--project-name", app, "--file", file] ++ [action])
+      (["--file", file] ++ [action])
       |> List.flatten()
 
     Validate.validate(file)
