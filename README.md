@@ -9,9 +9,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `divo` to your list of dependencies in `mix.exs`:
 
 ```elixir
-def deps do
+def deps() do
   [
-    {:divo, "~> 1.0.2", only: [:dev, :integration], organization: "smartcolumbus_os"}
+    {:divo, "~> 1.1.0", only: [:dev, :integration], organization: "smartcolumbus_os"}
   ]
 end
 ```
@@ -23,9 +23,34 @@ be found at [https://hexdocs.pm/divo](https://hexdocs.pm/divo).
 ## Usage
 
 Define services in your mix configuration file (typically under a `config/integration.exs` file)
-to define the dockerized service(s) you want to run as a dependency of your Elixir app.
+to define the dockerized service(s) you want to run as a dependency of your Elixir app. Define divo config in one of three ways"
 
+### Method 1 - Pre-existing definition from a behaviour-derived module stack
+In your mix file, include the additional dependency
+```elixir
+def deps() do
+  [
+    {:divo, "~> 1.1.0", only: [:dev, :integration], organization: "smartcolumbus_os"},
+    {:divo_redis, "~> 0.1.0", only: [:dev, :integration], organization: "smartcolumbus_os"}
+  ]
 ```
+And in your environment config, include the imported dependency module(s) as a list of tuples along with any environment variables the stack takes as a keyword list
+```elixir
+config :myapp,
+  divo: [
+    {DivoRedis, [initial_key: "myapp:secret"]}
+  ]
+```
+
+### Method 2 - Pre-existing definition from a supplied compose file on the file system
+In your environment config, include the path to the yaml- or json-formatted compose file
+```elixir
+config :myapp,
+  divo: "test/support/docker-compose.yaml
+```
+
+### Method 3 - Define the custom compose file as an elixir map directly in your config
+```elixir
 config :myapp,
   divo: [
     kafka: %{
@@ -51,47 +76,19 @@ config :myapp,
   ]
 ```
 
-## Options
+## Compose File Definition
 
-These options can be added to a service definition's config to customize it.
+Docker Compose instructions are passed to the `docker-compose` binary on your Docker engine host as either a yaml- or json-formatted document with maps defining the container services, networks, and volumes needed to run the services as an interconnected stack of components (as well as a compose file version). The keys in the underlying map structure generally have a one-to-one relationship to the various arguments available to the `docker run` command.
 
-* `image` - the name of the docker image to be started. This is the only required key.
+For more details, see the full [docker compose documentation](https://docs.docker.com/compose/compose-file/)
 
-* `env` - a keyword list of environment variables to be set in the started container. Each element is translated to a `--env=VARIABLE=VALUE` option in the run command.
-
-* `ports` - a list of ports to be exposed to the system. Each element is translated to a `--publish=LOCAL:REMOTE` option in the run command.
-
-* `volumes` - a list of tuples of the format `{local_volume, remote_volume}`. Each element is translated to a `--volume=LOCAL:REMOTE` option in the run command
-
-* `command` - a command to be run in the created container. Does not support piping `ls | grep logs` or additional commands `ls && cd ..`
-
-* `net` - a different service defined by Divo that this container needs to be linked to. Translated to `--network=container:APP_NAME-SERVICE_NAME`
-
-* `additional_opts` - a list of strings representing extra options to be passed to `docker run`. This allows for options not explicitly supported by Divo to be used if needed. Any option defined in the (Docker Run)[https://docs.docker.com/engine/reference/commandline/run/] docs can be used.
-
-* `wait_for` - see [Wait For]()
-
-
-## Wait For
+## Divo Wait
 
 Sometimes services take a moment to start up and Elixir apps tend to start (and attempt to run their tests)
-too quickly for their dependencies to be ready. For those situations, add the key `:wait_for` to the map
-that defines each services that will need to be fully initialized before accepting interactions from your
-service-under-test. The value of that key should be a map containing a log message to expect from the service
-indicating it is ready to accept requests, a interval in seconds to wait between log parsing attempts, and a
-number of retries to make the attempt.
+too quickly for their dependencies to be ready. For those situations, add the key `:divo_wait` to the app config that defines a wait period in milliseconds and a maximum number of tries to check for the containerized services to be healthy before aborting. In order for the wait to hold execution for the containers to register as healthy with the Docker engine, a [healthcheck](https://docs.docker.com/compose/compose-file/#healthcheck) must be built into the Dockerfile for the image or defined in the compose file.
 
-```
-...
-  kafka: %{
-    image: ...,
-    env: [
-      ...
-    ],
-    wait_for: %{
-        log: "home",
-        dwell: 400,
-        max_retries: 10
-      }
-  }
+```elixir
+config :myapp,
+  divo: "test/support/docker-compose.yaml",
+  divo_wait: [dwell: 700, max_tries: 50]
 ```
