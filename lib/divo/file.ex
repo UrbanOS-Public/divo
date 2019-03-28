@@ -22,10 +22,23 @@ defmodule Divo.File do
     app_config
   end
 
+  def ensure_file(app_config) when is_list(app_config) do
+    file = file_name()
+
+    Logger.info("Generating : #{file} from stack module")
+
+    app_config
+    |> Divo.Stack.concat_compose()
+    |> Jason.encode!()
+    |> write(file)
+
+    file
+  end
+
   def ensure_file(app_config) when is_map(app_config) do
     file = file_name()
 
-    Logger.info("Generating : #{file}")
+    Logger.info("Generating : #{file} from map")
 
     app_config
     |> Jason.encode!()
