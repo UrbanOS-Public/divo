@@ -73,6 +73,8 @@ defmodule Divo.Compose do
   end
 
   defp await() do
+    Logger.info("Please wait for containers to register as 'healthy'")
+
     fetch_containers()
     |> Enum.filter(&health_defined?/1)
     |> Enum.map(&await_healthy/1)
@@ -95,7 +97,7 @@ defmodule Divo.Compose do
 
   defp check_health(container) do
     fn ->
-      Logger.info("Checking #{container} is healthy...")
+      Logger.debug("Checking #{container} is healthy...")
 
       container
       |> health_status()

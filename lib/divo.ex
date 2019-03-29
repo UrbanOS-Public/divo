@@ -35,8 +35,12 @@ defmodule Divo do
             dependent_apps =
               Application.spec(app, :applications) -- [:kernel, :stdlib, :elixir, :ex_unit, :logger, :divo, :placebo]
 
+            Logger.remove_backend(:console)
+
             [app | dependent_apps]
             |> Enum.each(&Application.stop/1)
+
+            Logger.add_backend(:console)
           end
 
           Divo.Compose.kill()
