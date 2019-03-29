@@ -12,6 +12,12 @@ defmodule Divo.Compose do
   require Logger
   alias Divo.{File, Helper, Validate}
 
+  @doc """
+  Builds and/or validates the compose file and executes the `docker-compose up`
+  call to start the entirety of the defined stack or a subset of the services
+  defined in the stack based on supplying an optional list of service keys.
+  """
+  @spec run(keyword()) :: none()
   def run(opts \\ []) do
     services = get_services(opts)
 
@@ -21,10 +27,22 @@ defmodule Divo.Compose do
     await()
   end
 
+  @doc """
+  Builds and/or validates the compose file and executes the `docker-compose stop`
+  call to stop the containerized services without removing the resources created
+  by the compose file.
+  """
+  @spec stop() :: none()
   def stop() do
     execute("stop")
   end
 
+  @doc """
+  Builds and/or validates the compose file and executes the `docker-compose down`
+  call to stop the containerized services and removes all resources created by
+  the compose file such as containers, networks, and volumes.
+  """
+  @spec kill() :: none()
   def kill() do
     execute("down")
   end

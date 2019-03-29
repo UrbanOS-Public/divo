@@ -5,10 +5,20 @@ defmodule Divo.Helper do
   commands.
   """
 
+  @doc """
+  Returns the name of the calling app from the mix config.
+  """
+  @spec fetch_name() :: atom()
   def fetch_name() do
     Mix.Project.config()[:app]
   end
 
+  @doc """
+  Returns the configuration for divo from the environment config
+  exs file that defines the container services to run or the path
+  to the config given an existing compose file.
+  """
+  @spec fetch_config() :: map() | String.t() | [tuple()]
   def fetch_config() do
     with {:ok, config} <- Application.fetch_env(fetch_name(), :divo) do
       config
