@@ -18,7 +18,7 @@ defmodule Divo.Helper do
   exs file that defines the container services to run or the path
   to the config given an existing compose file.
   """
-  @spec fetch_config() :: map() | String.t | [tuple()]
+  @spec fetch_config() :: map() | String.t() | [tuple()]
   def fetch_config() do
     with {:ok, config} <- Application.fetch_env(fetch_name(), :divo) do
       config

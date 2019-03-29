@@ -12,7 +12,7 @@ defmodule Divo.File do
   pass-through from an existing compose file or the path of
   the file dynamically created by divo.
   """
-  @spec file_name() :: String.t
+  @spec file_name() :: String.t()
   def file_name() do
     app = Helper.fetch_name()
 
@@ -28,7 +28,7 @@ defmodule Divo.File do
   and writes a dynamic compose file to a temp directory before
   returning the path to that temp file.
   """
-  @spec ensure_file(String.t | [tuple()] | map()) :: String.t
+  @spec ensure_file(String.t() | [tuple()] | map()) :: String.t()
   def ensure_file(app_config) when is_binary(app_config) do
     Logger.info("Using : #{app_config}")
 
