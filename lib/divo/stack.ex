@@ -6,10 +6,24 @@ defmodule Divo.Stack do
   standing up well-defined services with
   little variation in configuration.
   """
-  alias Divo.Helper
 
+  @doc """
+  Defines the behaviour that must be implemented to
+  supply configs from external modules to divo. The
+  configuration values are expected as a keyword list
+  of attributes specific to each module adopting the
+  behaviour.
+  """
   @callback gen_stack(keyword()) :: {atom(), map()}
 
+  @doc """
+  Iterates over modules supplied in the app :divo
+  config, calling the `gen_stack` function on each
+  module's implementation of the behavior, collecting
+  the resulting maps into a single map and passing
+  the accumulated result out for writing out the file.
+  """
+  @spec concat_compose([tuple()]) :: map()
   def concat_compose(config) do
     compose_file = %{version: "3.4"}
 
