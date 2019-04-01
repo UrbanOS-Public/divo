@@ -29,11 +29,13 @@ defmodule Divo.Stack do
 
     services =
       config
-      |> Enum.map(fn {module, envars} ->
-        apply(module, :gen_stack, [envars])
-      end)
+      |> Enum.map(&configure_stack/1)
       |> Enum.reduce(%{}, fn service, acc -> Map.merge(service, acc) end)
 
     Map.put(compose_file, :services, services)
   end
+
+  defp configure_stack(module) when is_atom(module), do: apply(module, :gen_stack, [[]])
+
+  defp configure_stack({module, envars}), do: apply(module, :gen_stack, [envars])
 end
