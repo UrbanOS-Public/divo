@@ -2,7 +2,7 @@ defmodule Divo.StackTest do
   use ExUnit.Case
   require TemporaryEnv
 
-  test "behaviour returns the service definition" do
+  test "behaviour returns the service definition of a single stack" do
     services = [
       {DivoFoobar, [db_password: "we-are-divo", db_name: "foobar-db", something: "else"]}
     ]
@@ -21,6 +21,29 @@ defmodule Divo.StackTest do
             "PASSWORD=we-are-divo",
             "DB=foobar-db"
           ]
+        }
+      }
+    }
+
+    actual = Divo.Stack.concat_compose(services)
+
+    assert expected == actual
+  end
+
+  test "behaviour returns the service definition of a stack with no parameters" do
+    services = [
+      DivoBarbaz
+    ]
+
+    expected = %{
+      version: "3.4",
+      services: %{
+        barbaz: %{
+          image: "library/barbaz",
+          ports: ["2345:2345", "7777:7777"],
+          healthcheck: %{
+            test: ["CMD-SHELL", "/bin/true || exit 1"]
+          }
         }
       }
     }
@@ -51,6 +74,23 @@ defmodule DivoFoobar do
           "PASSWORD=#{password}",
           "DB=#{db_name}"
         ]
+      }
+    }
+  end
+end
+
+defmodule DivoBarbaz do
+  @behaviour Divo.Stack
+
+  @impl Divo.Stack
+  def gen_stack(_envars) do
+    %{
+      barbaz: %{
+        image: "library/barbaz",
+        healthcheck: %{
+          test: ["CMD-SHELL", "/bin/true || exit 1"]
+        },
+        ports: ["2345:2345", "7777:7777"]
       }
     }
   end

@@ -31,11 +31,11 @@ defmodule Divo.FileTest do
     assert Divo.File.ensure_file(config) == "/var/tmp/foo/divo.compose"
   end
 
-  test "generates compose file from a behaviour implementation" do
+  test "generates compose file from a behaviour implementation of a single service" do
     allow(File.write!(any(), any()), return: :ok)
     allow(System.get_env("TMPDIR"), return: "/var/tmp/bar")
 
-    services = [{DivoBarbaz, []}]
+    services = [{DivoFoobar, [db_password: "we-are-divo", db_name: "foobar-db", something: "else"]}]
 
     TemporaryEnv.put :divo, :divo, services do
       config = Divo.Helper.fetch_config()
@@ -43,21 +43,20 @@ defmodule Divo.FileTest do
       assert Divo.File.ensure_file(config) == "/var/tmp/bar/divo.compose"
     end
   end
-end
 
-defmodule DivoBarbaz do
-  @behaviour Divo.Stack
+  test "concatenates compose file from multiple implementations of the behaviour" do
+    allow(File.write!(any(), any()), return: :ok)
+    allow(System.get_env("TMPDIR"), return: "/var/tmp/bar")
 
-  @impl Divo.Stack
-  def gen_stack(_envars) do
-    %{
-      barbaz: %{
-        image: "library/barbaz",
-        healthcheck: %{
-          test: ["CMD-SHELL", "/bin/true || exit 1"]
-        },
-        ports: ["2345:2345", "7777:7777"]
-      }
-    }
+    services = [
+      {DivoFoobar, [db_password: "we-are-divo", db_name: "foobar-db", something: "else"]},
+      DivoBarbaz
+    ]
+
+    TemporaryEnv.put :divo, :divo, services do
+      config = Divo.Helper.fetch_config()
+
+      assert Divo.File.ensure_file(config) == "/var/tmp/bar/divo.compose"
+    end
   end
 end
