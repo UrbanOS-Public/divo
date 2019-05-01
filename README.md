@@ -92,3 +92,7 @@ config :myapp,
   divo: "test/support/docker-compose.yaml",
   divo_wait: [dwell: 700, max_tries: 50]
 ```
+
+
+## License
+Released under [Apache 2 license](https://github.com/SmartColumbusOS/divo/blob/master/LICENSE).

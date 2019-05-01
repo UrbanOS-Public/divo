@@ -9,6 +9,7 @@ defmodule Divo.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
+      docs: docs(),
       description: description(),
       source_url: "https://github.com/SmartColumbusOS/divo"
     ]
@@ -35,6 +36,16 @@ defmodule Divo.MixProject do
 
   defp description do
     "A library for easily constructing integration service dependencies in docker and orchestrating with mix."
+  end
+
+  defp docs do
+    [
+      main: "getting-started",
+      source_url: "https://github.com/SmartColumbusOS/divo",
+      extras: [
+        "docs/getting-started.md"
+      ]
+    ]
   end
 
   defp package do
