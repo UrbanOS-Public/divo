@@ -40,10 +40,12 @@ defmodule Divo.MixProject do
 
   defp docs do
     [
-      main: "getting-started",
+      main: "README",
       source_url: "https://github.com/SmartColumbusOS/divo",
       extras: [
-        "docs/getting-started.md"
+        "README.md",
+        "docs/docker-compose.md",
+        "docs/additional-configuration.md"
       ]
     ]
   end

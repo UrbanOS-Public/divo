@@ -1,6 +1,8 @@
 defmodule Mix.Tasks.Test.Integration do
   @moduledoc """
-  Mix.Task that run integration tests
+  Mix.Task that run integration tests.
+  This task will only work if your project has been
+  configured according to the configuration steps provided in `Divo`.
   """
   use Mix.Task
   require Logger
