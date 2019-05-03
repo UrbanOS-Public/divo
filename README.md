@@ -24,7 +24,7 @@ Define services in your mix configuration file to define the dockerized service(
 Define divo config in one of the following three ways:
 
 #### Method 1 - Pre-existing definition from a supplied compose file on the file system
-In your config, include the path to the yaml- or json-formatted compose file
+In your config, include the path to the yaml or json-formatted compose file
 ```elixir
 #config/config.exs
 config :myapp,
