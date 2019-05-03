@@ -1,8 +1,6 @@
 defmodule Mix.Tasks.Docker.Kill do
   @moduledoc """
-  Creates a custom mix task for killing docker containers
-  defined in your application's environment config file
-  under the :divo key.
+  Executes `docker-compose down` with your :divo configuration.
   """
   use Mix.Task
   alias Divo.Compose

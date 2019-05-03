@@ -1,8 +1,6 @@
 defmodule Mix.Tasks.Docker.Stop do
   @moduledoc """
-  Creates a custom mix task for stopping docker containers
-  defined in your application's environment config file
-  under the :divo key.
+  Executes `docker-compose stop` with your :divo configuration.
   """
   use Mix.Task
   alias Divo.Compose
