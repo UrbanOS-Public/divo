@@ -2,7 +2,7 @@ defmodule Divo.File do
   @moduledoc """
   Constructs the ad hoc docker-compose file used by
   Divo to run docker dependency services based on
-  config in the app environment (Mix.env()) file.
+  config in the app environment (`Mix.env()`) file.
   """
   require Logger
   alias Divo.Helper
@@ -10,7 +10,7 @@ defmodule Divo.File do
   @doc """
   Returns the name of the compose file to run, either as a
   pass-through from an existing compose file or the path of
-  the file dynamically created by divo.
+  the file dynamically created by Divo.
   """
   @spec file_name() :: String.t()
   def file_name() do
@@ -24,9 +24,9 @@ defmodule Divo.File do
 
   @doc """
   Passes through the file name when the compose file is
-  pre-existing and supplied via file system path or builds
+  pre-existing and supplied via file system path. Builds
   and writes a dynamic compose file to a temp directory before
-  returning the path to that temp file.
+  returning the path to that temp file if file does not exist.
   """
   @spec ensure_file(String.t() | [tuple()] | map()) :: String.t()
   def ensure_file(app_config) when is_binary(app_config) do

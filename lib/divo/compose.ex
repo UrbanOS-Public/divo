@@ -1,13 +1,10 @@
 defmodule Divo.Compose do
   @moduledoc """
   Implements the  basic docker-compose commands for running from
-  your mix tasks. Run creates and starts the container services. Stop
-  will only stop the containers but leave them present on the system
-  for debugging and introspection if needed. Kill will stop any running
-  containers and remove all containers regardless of their current state.
+  your mix tasks. Run, stop, and kill container services.
 
   These operations only apply to services managed by Divo, i.e. defined in
-  your Mix.env file under the :myapp, :divo key.
+  your Mix.env file under the `:myapp, :divo` key.
   """
   require Logger
   alias Divo.{File, Helper, Validate}
@@ -63,7 +60,9 @@ defmodule Divo.Compose do
   end
 
   defp log_compose({message, 0}), do: Logger.info(message)
-  defp log_compose({message, code}), do: Logger.error("Docker Compose exited with code: #{code}. #{message}")
+
+  defp log_compose({message, code}),
+    do: Logger.error("Docker Compose exited with code: #{code}. #{message}")
 
   defp get_services(opts) do
     case Keyword.get(opts, :services) do
