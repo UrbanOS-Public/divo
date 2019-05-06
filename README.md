@@ -23,7 +23,7 @@ The docs can be found at [https://hexdocs.pm/divo](https://hexdocs.pm/divo).
 Define services in your mix configuration file to define the dockerized service(s) you want to run as a dependency of your Elixir app.
 Define divo config in one of the following three ways:
 
-#### Method 1 - Pre-existing definition from a supplied compose file on the file system
+#### Method 1 - Compose file
 In your config, include the path to the yaml or json-formatted compose file
 ```elixir
 #config/config.exs
@@ -47,14 +47,14 @@ services:
       retries: 3
 ```
 
-#### Method 2 - Pre-existing definition from a behaviour-derived module stack
+#### Method 2 - Pre-existing module
 In your mix file, include the additional dependency
 ```elixir
 #mix.exs
 def deps() do
   [
-    {:divo, "~> 1.1.0", only: [:dev, :integration], organization: "smartcolumbus_os"},
-    {:divo_redis, "~> 0.1.0", only: [:dev, :integration], organization: "smartcolumbus_os"}
+    {:divo, "~> 1.1.0", only: [:dev, :integration]},
+    {:divo_redis, "~> 0.1.0", only: [:dev, :integration]}
   ]
 ```
 And in your config, include the imported dependency module(s) as a list of tuples along with any environment variables the stack takes as a keyword list
@@ -67,7 +67,7 @@ config :myapp,
   divo_wait: [dwell: 700, max_tries: 50]
 ```
 
-#### Method 3 - Define the custom compose file as an elixir map directly in your config
+#### Method 3 - Elixir map
 ```elixir
 #config/config.exs
 config :myapp,
@@ -128,7 +128,7 @@ defp test_paths(_), do: ["test/unit"]
 
 In each integration module add:
 
-`use divo`
+`use Divo`
 
 Divo will then take care of running `docker-compose up` before running your tests
 and then run `docker-compose down` after they've completed.
