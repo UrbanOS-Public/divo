@@ -11,7 +11,7 @@ defmodule Divo.MixProject do
       package: package(),
       docs: docs(),
       description: description(),
-      source_url: "https://github.com/SmartColumbusOS/divo"
+      source_url: "https://github.com/SmartCitiesData/divo"
     ]
   end
 
@@ -40,8 +40,8 @@ defmodule Divo.MixProject do
 
   defp docs do
     [
-      main: "README",
-      source_url: "https://github.com/SmartColumbusOS/divo",
+      main: "readme",
+      source_url: "https://github.com/SmartCitiesData/divo",
       extras: [
         "README.md",
         "docs/docker-compose.md",
@@ -54,7 +54,7 @@ defmodule Divo.MixProject do
     [
       organization: "smartcolumbus_os",
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/SmartColumbusOS/divo"}
+      links: %{"GitHub" => "https://github.com/SmartCitiesData/divo"}
     ]
   end
 end
