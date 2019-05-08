@@ -20,7 +20,7 @@ config :divo,
           "VAL1=foo",
           "VAL2=bar"
         ],
-        ports: ["5432:5432"],
+        ports: ["5431:5431"],
         command: ~S{ls /home && echo "Yodel"}
       }
     }
