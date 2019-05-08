@@ -20,9 +20,6 @@ install:
   - mix credo
 script:
   - mix test
-branches:
-  only:
-  - master
 deploy:
   skip_cleanup: true
   provider: script
