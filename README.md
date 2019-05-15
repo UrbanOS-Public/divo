@@ -13,7 +13,7 @@ The package can be installed by adding `divo` to your list of dependencies in `m
 ```elixir
 def deps() do
   [
-    {:divo, "~> 1.1.4", only: [:dev, :integration]}
+    {:divo, "~> 1.1.5", only: [:dev, :integration]}
   ]
 end
 ```
@@ -56,7 +56,7 @@ In your mix file, include the additional dependency
 #mix.exs
 def deps() do
   [
-    {:divo, "~> 1.1.4", only: [:dev, :integration]},
+    {:divo, "~> 1.1.5", only: [:dev, :integration]},
     {:divo_redis, "~> 0.1.0", only: [:dev, :integration]}
   ]
 ```
@@ -160,4 +160,4 @@ Integration tests are executed by running:
 `mix test.integration`
 
 ## License
-Released under [Apache 2 license](https://github.com/SmartColumbusOS/divo/blob/master/LICENSE).
+Released under [Apache 2 license](https://github.com/smartcitiesdata/divo/blob/master/LICENSE).
