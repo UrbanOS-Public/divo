@@ -61,8 +61,10 @@ defmodule Divo.Compose do
 
   defp log_compose({message, 0}), do: Logger.info(message)
 
-  defp log_compose({message, code}),
-    do: Logger.error("Docker Compose exited with code: #{code}. #{message}")
+  defp log_compose({message, code}) do
+    Logger.error("Docker Compose exited with code: #{code}. #{message}")
+    raise "Docker Compose exited with code: #{code}. #{message}"
+  end
 
   defp get_services(opts) do
     case Keyword.get(opts, :services) do
