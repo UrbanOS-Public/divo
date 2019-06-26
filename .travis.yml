@@ -13,12 +13,13 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 install:
-  - mix local.rebar --force;
+  - mix local.rebar --force
   - mix local.hex --force
-  - mix deps.get
+  - mix deps.update --all
   - mix format --check-formatted
   - mix credo
 script:
+  - mix hex.outdated
   - mix test
 deploy:
   skip_cleanup: true
