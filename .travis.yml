@@ -15,10 +15,10 @@ before_install:
 install:
   - mix local.rebar --force
   - mix local.hex --force
-  - mix deps.update --all
+  - mix deps.get
+script:
   - mix format --check-formatted
   - mix credo
-script:
   - mix hex.outdated
   - mix test
 deploy:
