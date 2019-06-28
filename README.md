@@ -13,7 +13,7 @@ The package can be installed by adding `divo` to your list of dependencies in `m
 ```elixir
 def deps() do
   [
-    {:divo, "~> 1.1.5", only: [:dev, :integration]}
+    {:divo, "~> 1.1.8", only: [:dev, :integration]}
   ]
 end
 ```
