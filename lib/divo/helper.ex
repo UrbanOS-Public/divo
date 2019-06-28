@@ -20,9 +20,8 @@ defmodule Divo.Helper do
   """
   @spec fetch_config() :: map() | String.t() | [tuple()]
   def fetch_config() do
-    with {:ok, config} <- Application.fetch_env(fetch_name(), :divo) do
-      config
-    else
+    case Application.fetch_env(fetch_name(), :divo) do
+      {:ok, config} -> config
       :error -> raise ArgumentError, message: "no services were defined in application config"
     end
   end

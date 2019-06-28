@@ -4,7 +4,7 @@ defmodule Divo.MixProject do
   def project do
     [
       app: :divo,
-      version: "1.1.6",
+      version: "1.1.7",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -25,12 +25,13 @@ defmodule Divo.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:jason, "~> 1.1"},
       {:placebo, "~> 1.2", only: [:dev, :test]},
       {:ex_doc, "~> 0.19", only: :dev},
       {:patiently, "~> 0.2"},
-      {:temporary_env, "~> 2.0", only: [:dev, :test]}
+      {:temporary_env, "~> 2.0", only: [:dev, :test]},
+      {:husky, "~> 1.0", only: :dev, runtime: false}
     ]
   end
 
