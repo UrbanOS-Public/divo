@@ -70,6 +70,11 @@ config :myapp,
   divo_wait: [dwell: 700, max_tries: 50]
 ```
 
+##### Known Modules:
+[Kafka](https://github.com/smartcitiesdata/divo_kafka)
+[Redis](https://github.com/smartcitiesdata/divo_redis)
+[Machinebox](https://github.com/joshrotenberg/divo_machinebox)
+
 #### Method 3 - Elixir map
 ```elixir
 #config/config.exs
