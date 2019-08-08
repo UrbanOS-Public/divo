@@ -19,7 +19,7 @@ install:
 script:
   - mix format --check-formatted
   - mix credo
-  - mix dialyzer #--halt-exit-status #enable once warnings are fixed
+  - mix dialyzer --halt-exit-status
   - mix hex.outdated || true
   - mix test
 cache:
