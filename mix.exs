@@ -25,13 +25,14 @@ defmodule Divo.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:jason, "~> 1.1"},
-      {:placebo, "~> 1.2", only: [:dev, :test]},
-      {:ex_doc, "~> 0.19", only: :dev},
       {:patiently, "~> 0.2"},
+      {:ex_doc, "~> 0.19", only: :dev},
+      {:placebo, "~> 1.2", only: [:dev, :test]},
       {:temporary_env, "~> 2.0", only: [:dev, :test]},
-      {:husky, "~> 1.0", only: :dev, runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
+      {:husky, "~> 1.0", only: :dev, runtime: false},
+      {:credo, "~> 1.1", only: [:dev, :test], runtime: false}
     ]
   end
 
