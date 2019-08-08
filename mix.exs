@@ -27,12 +27,12 @@ defmodule Divo.MixProject do
     [
       {:jason, "~> 1.1"},
       {:patiently, "~> 0.2"},
-      {:ex_doc, "~> 0.19", only: :dev},
       {:placebo, "~> 1.2", only: :test},
       {:temporary_env, "~> 2.0", only: :test},
+      {:credo, "~> 1.1", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
-      {:husky, "~> 1.0", only: :dev, runtime: false},
-      {:credo, "~> 1.1", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
+      {:husky, "~> 1.0", only: :dev, runtime: false}
     ]
   end
 
