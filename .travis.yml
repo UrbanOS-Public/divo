@@ -22,6 +22,9 @@ script:
   - mix dialyzer #--halt-exit-status #enable once warnings are fixed
   - mix hex.outdated || true
   - mix test
+cache:
+  directories:
+    - priv/plts
 deploy:
   skip_cleanup: true
   provider: script
