@@ -11,7 +11,8 @@ defmodule Divo.MixProject do
       package: package(),
       docs: docs(),
       description: description(),
-      source_url: "https://github.com/smartcitiesdata/divo"
+      source_url: "https://github.com/smartcitiesdata/divo",
+      dialyzer: [plt_add_apps: [:mix]]
     ]
   end
 
