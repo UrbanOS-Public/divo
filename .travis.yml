@@ -18,7 +18,7 @@ install:
   - mix deps.get
 script:
   - mix format --check-formatted
-  - mix credo
+  - mix credo --strict
   - mix hex.outdated || true
   - mix test
 deploy:
