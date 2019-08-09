@@ -24,7 +24,7 @@ script:
   - mix test
 cache:
   directories:
-    - priv/plts
+    - cache 
 deploy:
   skip_cleanup: true
   provider: script

@@ -12,7 +12,7 @@ defmodule Divo.MixProject do
       docs: docs(),
       description: description(),
       source_url: "https://github.com/smartcitiesdata/divo",
-      dialyzer: [plt_add_apps: [:mix]]
+      dialyzer: [plt_add_apps: [:mix], plt_file: {:no_warn, "cache/dialyzer.plt"}]
     ]
   end
 
