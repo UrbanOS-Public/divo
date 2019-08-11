@@ -10,7 +10,7 @@ defmodule Divo.Validate do
   Wraps the function of `docker-compose` to validate the structure of
   the compose file for correct format/syntax and required keys are supplied.
   """
-  @spec validate(binary()) :: none()
+  @spec validate(binary()) :: :ok | {:error, any()}
   def validate(file) do
     System.cmd("docker-compose", ["--file", file, "config"], stderr_to_stdout: true)
     |> case do
