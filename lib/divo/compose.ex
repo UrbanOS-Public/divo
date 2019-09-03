@@ -35,6 +35,16 @@ defmodule Divo.Compose do
   end
 
   @doc """
+  Builds and/or validates the compose file and executes the `docker-compose remove`
+  call to remove the containerized services without removing the resources created
+  by the compose file.
+  """
+  @spec remove() :: :ok | {:error, any()}
+  def remove() do
+    execute("rm")
+  end
+
+  @doc """
   Builds and/or validates the compose file and executes the `docker-compose down`
   call to stop the containerized services and removes all resources created by
   the compose file such as containers, networks, and volumes.

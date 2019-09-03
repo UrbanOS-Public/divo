@@ -39,6 +39,7 @@ defmodule Divo do
           end
 
           Divo.Compose.kill()
+          Divo.Compose.remove()
         end)
 
         :ok
