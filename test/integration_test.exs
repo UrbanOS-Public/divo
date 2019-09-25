@@ -1,6 +1,5 @@
 defmodule IntegrationAllTest do
-  use ExUnit.Case
-  use Divo
+  use Divo.Case
 
   test "the full dependency stack is stood up" do
     {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
