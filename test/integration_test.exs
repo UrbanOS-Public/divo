@@ -20,6 +20,27 @@ defmodule IntegrationPartialTest do
   end
 end
 
+defmodule IntegrationPostRunHookTest do
+  use ExUnit.Case
+
+  use Divo,
+    post_docker_run: [
+      fn -> :ets.new(:post_docker_run_tab, [:named_table, :public]) end,
+      fn ->
+        {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
+        unless String.contains?(containers, "busybox_1"), do: raise("post_docker_run failure")
+      end
+    ]
+
+  setup_all do
+    [result: :ets.last(:post_docker_run_tab)]
+  end
+
+  test "executes hooks after docker run but before testing begins", %{result: result} do
+    assert result == :"$end_of_table"
+  end
+end
+
 defmodule IntegrationBuildTest do
   use ExUnit.Case
   require TemporaryEnv
