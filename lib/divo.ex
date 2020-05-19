@@ -14,12 +14,16 @@ defmodule Divo do
   """
   defmacro __using__(opts \\ []) do
     auto_start = Keyword.get(opts, :auto_start, true)
+    post_docker_run = Keyword.get(opts, :post_docker_run, [])
 
     quote do
       import Divo.Compose
 
       setup_all do
         Divo.Compose.run(unquote(opts))
+
+        unquote(post_docker_run)
+        |> Enum.each(& &1.())
 
         app = Mix.Project.config() |> Keyword.get(:app)
         if unquote(auto_start), do: Application.ensure_all_started(app)
