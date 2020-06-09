@@ -116,6 +116,27 @@ defmodule IntegrationLogTest do
     end
   end
 
+  defmodule IntegrationSuiteTest do
+    use ExUnit.Case
+
+    test "all parts of the stack are stood up by default" do
+      Divo.Suite.start(exit_hook: &on_exit/1, exit_arity: 0)
+
+      {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
+
+      assert String.contains?(containers, "busybox_1")
+    end
+
+    test "some parts of the stack are stood up by when supplied" do
+      Divo.Suite.start(services: [:alpine], exit_hook: &on_exit/1, exit_arity: 0)
+
+      {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
+
+      assert String.contains?(containers, "busybox_1") == false
+      assert String.contains?(containers, "alpine_1") == true
+    end
+  end
+
   defp check_logs_for(log, word) do
     log
     |> String.split()
