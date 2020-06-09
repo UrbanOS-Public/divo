@@ -172,8 +172,13 @@ This will make Divo stand up dockers that last the entire run of the test suite 
 Ideally, you will want to NOT have `use Divo` in your tests. However, if you leave `use Divo` in for all of the tests, and still add the start to your `test_helper.exs` the tests will still run as expected, with an additional docker start and stop wrapped around the whole run.
 
 The `Divo.Suite.start` function takes all of the options that `use Divo` does plus a few extras for controlling where the final docker cleanup occurs:
-- `exit_hook` - the function to register the cleanup into. Defaults to `&System.at_exit/1`
-- `exit_arity` - the arity function that the exit hook expects. Defaults to `1` as `&System.at_exit/1` expects this
+- `auto_cleanup?` - whether or not to cleanup dockers on program exit. Defaults to `true`
+
+Whether or not you choose to let it cleanup after itself, `Divo.Suite.start` will return a zero-arity cleanup hook that you can call when you want to explicitly cleanup the dockers.
+```elixir
+Divo.Suite.start()
+|> on_exit()
+```
 
 ## Running Integration Tests
 
