@@ -158,6 +158,23 @@ defmodule MyAppTest do
 end
 ```
 
+## Use Divo for the entire test suite
+In your integration or test suite's `test_helper.exs` file add `Divo.Suite.start()` before `ExUnit.start()`
+Example:
+```elixir
+Divo.Suite.start()
+...
+ExUnit.start()
+```
+
+This will make Divo stand up dockers that last the entire run of the test suite (or just a few modules or tests if you specified them in your `mix test.integration` command). It will wire itself up to tear down the dockers if in cases where the tests fail to compile.
+
+Ideally, you will want to NOT have `use Divo` in your tests. However, if you leave `use Divo` in for all of the tests, and still add the start to your `test_helper.exs` the tests will still run as expected, with an additional docker start and stop wrapped around the whole run.
+
+The `Divo.Suite.start` function takes all of the options that `use Divo` does plus a few extras for controlling where the final docker cleanup occurs:
+- `exit_hook` - the function to register the cleanup into. Defaults to `&System.at_exit/1`
+- `exit_arity` - the arity function that the exit hook expects. Defaults to `1` as `&System.at_exit/1` expects this
+
 ## Running Integration Tests
 
 Integration tests are executed by running:
