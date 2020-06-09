@@ -120,7 +120,8 @@ defmodule IntegrationLogTest do
     use ExUnit.Case
 
     test "all parts of the stack are stood up by default" do
-      Divo.Suite.start(exit_hook: &on_exit/1, exit_arity: 0)
+      Divo.Suite.start(auto_cleanup?: false)
+      |> on_exit()
 
       {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
 
@@ -128,7 +129,8 @@ defmodule IntegrationLogTest do
     end
 
     test "some parts of the stack are stood up by when supplied" do
-      Divo.Suite.start(services: [:alpine], exit_hook: &on_exit/1, exit_arity: 0)
+      Divo.Suite.start(services: [:alpine], auto_cleanup?: false)
+      |> on_exit()
 
       {containers, _} = System.cmd("docker", ["ps", "-a"], stderr_to_stdout: true)
 
