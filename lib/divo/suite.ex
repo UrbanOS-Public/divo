@@ -12,7 +12,6 @@ defmodule Divo.Suite do
       end)
     end
 
-    cleanup_hook = fn -> Divo.cleanup(opts) end
-    cleanup_hook
+    fn -> Divo.cleanup(opts) end
   end
 end
