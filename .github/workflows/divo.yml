@@ -27,6 +27,3 @@ jobs:
       - name: Run tests
         run: |
           bash scripts/gh-action-test.sh
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
