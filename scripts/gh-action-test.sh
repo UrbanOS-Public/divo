@@ -7,6 +7,6 @@ sudo mv docker-compose /usr/local/bin
 
 mix format --check-formatted
 mix credo
-mix dialyzer --halt-exit-status
+mix dialyzer
 mix hex.outdated || true
 mix test
