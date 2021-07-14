@@ -1,0 +1,29 @@
+name: divo
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+    branches:
+      - master
+
+jobs:
+  ci:
+    name: Verify Application
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1.5.0
+        with:
+          otp-version: 21.3
+          elixir-version: 1.10.4
+          experimental-otp: true
+      - name: Get dependencies
+        run: |
+          bash scripts/gh-action-get-deps.sh
+      - name: Run tests
+        run: |
+          bash scripts/gh-action-test.sh
