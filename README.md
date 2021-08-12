@@ -44,8 +44,8 @@ services:
       - "6379:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "PING"]
-      interval: 5s,
-      timeout: 10s,
+      interval: 5s
+      timeout: 10s
       retries: 3
 ```
 
