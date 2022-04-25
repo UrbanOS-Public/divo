@@ -140,7 +140,7 @@ In each integration module add:
 Divo will then take care of running `docker-compose up` before running your tests
 and then run `docker-compose down` after they've completed.
 
-NOTE: Divo will start and stop docker-compose for every integration test module.
+NOTE: Divo will start and stop docker-compose for every integration test module, unless the "DIVO_DOWN" environment variable is set to "DISABLED".
 
 Example Integration Test Module using [redix](https://hex.pm/packages/redix):
 ```elixir
