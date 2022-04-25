@@ -41,7 +41,9 @@ defmodule Divo.Compose do
   """
   @spec kill() :: :ok | {:error, any()}
   def kill() do
-    execute("down")
+    if System.get_env("DIVO_DOWN") != "DISABLED" do
+      execute("down")
+    end
   end
 
   defp execute(action) do
