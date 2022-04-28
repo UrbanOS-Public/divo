@@ -18,6 +18,7 @@ end
 ```
 
 The docs can be found at [https://hexdocs.pm/divo](https://hexdocs.pm/divo).
+New versions are published with actions upon github release.
 
 ## Configuration
 
