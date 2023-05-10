@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir:1.8.1
+FROM bitwalker/alpine-elixir:1.14.4
 COPY . /app
 WORKDIR /app
 RUN mix local.hex --force \
