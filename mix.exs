@@ -28,7 +28,7 @@ defmodule Divo.MixProject do
     [
       {:jason, "~> 1.4"},
       {:patiently, "~> 0.2"},
-      {:placebo, "~> 2.0", only: :test},
+      {:mock, "~> 0.3", only: :test},
       {:temporary_env, "~> 2.0", only: :test},
       {:credo, "~> 1.7", only: :dev, runtime: false},
       {:dialyxir, "~> 1.3", only: :dev, runtime: false},
