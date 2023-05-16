@@ -12,7 +12,7 @@ The package can be installed by adding `divo` to your list of dependencies in `m
 ```elixir
 def deps() do
   [
-    {:divo, "~> 1.3.1", only: [:dev, :integration]}
+    {:divo, "~> 2.0.0", only: [:dev, :integration]}
   ]
 end
 ```
@@ -56,8 +56,8 @@ In your mix file, include the additional dependency
 #mix.exs
 def deps() do
   [
-    {:divo, "~> 1.3.1", only: [:dev, :integration]},
-    {:divo_redis, "~> 0.1.0", only: [:dev, :integration]}
+    {:divo, "~> 2.0.0", only: [:dev, :integration]},
+    {:divo_redis, "~> 1.0.0", only: [:dev, :integration]}
   ]
 ```
 And in your config, include the imported dependency module(s) as a list of tuples along with any environment variables the stack takes as a keyword list

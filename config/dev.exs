@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :divo,
   divo: %{
@@ -21,6 +21,3 @@ config :divo,
       }
     }
   }
-
-config :husky,
-  pre_commit: "./scripts/git_pre_commit_hook.sh"
