@@ -4,7 +4,7 @@ defmodule Divo.MixProject do
   def project do
     [
       app: :divo,
-      version: "2.0.0",
+      version: "2.0.1",
       elixir: "~> 1.14.4",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -28,7 +28,7 @@ defmodule Divo.MixProject do
     [
       {:jason, "~> 1.4"},
       {:patiently, "~> 0.2"},
-      {:mock, "~> 0.3", only: :test},
+      {:placebo_test, "~> 3.0", only: :test},
       {:temporary_env, "~> 2.0", only: :test},
       {:credo, "~> 1.7", only: :dev, runtime: false},
       {:dialyxir, "~> 1.3", only: :dev, runtime: false},

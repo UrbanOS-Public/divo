@@ -1,14 +1,12 @@
 defmodule Divo.ComposeTest do
   use ExUnit.Case, async: false
+  use Placebo
 
-  import Mock
-
-  setup_with_mocks([
-    {System, [:passthrough], [cmd: fn(_, _) -> {"", 0} end]},
-    {System, [], [cmd: fn(_, _, _) -> {"", 0} end]},
-    {System, [], [get_env: fn(_) -> "/tmp" end]}
-  ]) do
-    {:ok, foo: "bar"}
+  setup do
+    allow(System.cmd(any(), any()), meck_options: [:passthrough])
+    allow(System.get_env(any()), return: "/tmp")
+    allow(System.cmd(any(), any(), any()), return: {"", 0})
+    :ok
   end
 
   test "docker run command called with expected arguments" do
@@ -24,32 +22,26 @@ defmodule Divo.ComposeTest do
 
     error_message = "Failed to get authorization token: NoCredentialProviders: no valid providers in chain. Deprecated."
 
-    with_mocks(
-      [
-        {Divo.Validate, [], [validate: fn(_) -> :ok end]},
-        {System, [], [cmd: fn(_, _, _) -> {error_message, 1} end]},
-        {System, [], [get_env: fn(_) -> "/tmp" end]}
-      ]
-    ) do
-      assert_raise RuntimeError, "Docker Compose exited with code: 1. " <> error_message, fn ->
-        Divo.Compose.run()
-      end
+    allow(Divo.Validate.validate(any()), return: :ok)
+
+    allow(System.cmd(any(), any(), any()),
+      return: {error_message, 1}
+    )
+
+    assert_raise RuntimeError, "Docker Compose exited with code: 1. " <> error_message, fn ->
+      Divo.Compose.run()
     end
   end
 
   test "docker stop command called with expected arguments" do
     :ok = Divo.Compose.stop()
 
-    assert_called(
-      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true)
-    )
+    assert_called(System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true))
   end
 
   test "docker stop and rm commands called with expected arguments on kill" do
     :ok = Divo.Compose.kill()
 
-    assert_called(
-      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "down"], stderr_to_stdout: true)
-    )
+    assert_called(System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "down"], stderr_to_stdout: true))
   end
 end
