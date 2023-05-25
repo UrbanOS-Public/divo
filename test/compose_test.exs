@@ -36,16 +36,12 @@ defmodule Divo.ComposeTest do
   test "docker stop command called with expected arguments" do
     :ok = Divo.Compose.stop()
 
-    assert_called(
-      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true)
-    )
+    assert_called(System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "stop"], stderr_to_stdout: true))
   end
 
   test "docker stop and rm commands called with expected arguments on kill" do
     :ok = Divo.Compose.kill()
 
-    assert_called(
-      System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "down"], stderr_to_stdout: true)
-    )
+    assert_called(System.cmd("docker-compose", ["--file", "/tmp/divo.compose", "down"], stderr_to_stdout: true))
   end
 end

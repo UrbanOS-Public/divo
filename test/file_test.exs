@@ -47,20 +47,20 @@ defmodule Divo.FileTest do
       end
     end
 
-  test "concatenates compose file from multiple implementations of the behaviour" do
-    allow(File.write!(any(), any()), return: :ok)
-    allow(System.get_env("TMPDIR"), return: "/var/tmp/foo")
+    test "concatenates compose file from multiple implementations of the behaviour" do
+      allow(File.write!(any(), any()), return: :ok)
+      allow(System.get_env("TMPDIR"), return: "/var/tmp/foo")
 
-    services = [
-      {DivoFoobar, [db_password: "we-are-divo", db_name: "foobar-db", something: "else"]},
-      DivoBarbaz
-    ]
+      services = [
+        {DivoFoobar, [db_password: "we-are-divo", db_name: "foobar-db", something: "else"]},
+        DivoBarbaz
+      ]
 
-    TemporaryEnv.put :divo, :divo, services do
-      config = Divo.Helper.fetch_config()
+      TemporaryEnv.put :divo, :divo, services do
+        config = Divo.Helper.fetch_config()
 
-      assert Divo.File.ensure_file(config) == "/var/tmp/foo/divo.compose"
+        assert Divo.File.ensure_file(config) == "/var/tmp/foo/divo.compose"
+      end
     end
-  end
   end
 end
